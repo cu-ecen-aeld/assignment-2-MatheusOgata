@@ -1,9 +1,7 @@
 #include <stdio.h> 
-//#include <fcntl.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <syslog.h>
+#include <errno.h>
 
 #define NUMBER_OF_ARGS		3
 
@@ -26,8 +24,8 @@ int main(int argc, char *argv[])
 
 	if(file_dir == NULL)
 	{
+		perror("perror returned on attempting open the file");
 		syslog(LOG_ERR, "It's not possible to open the file \n");
-		printf("ERROR: It's not possible to open the file \n");
 		return 1;
 	}
 
@@ -35,8 +33,8 @@ int main(int argc, char *argv[])
 
 	if(fwrite(string_to_write, strlen(string_to_write), 1, file_dir) == -1)
 	{	
+		perror("perror returned on attempting writing to the file");
 		syslog(LOG_ERR, "It's not possible to write to the file\n");
-		printf("ERROR: It's not possible to write to the file\n");
 		return 1;
 	}
 

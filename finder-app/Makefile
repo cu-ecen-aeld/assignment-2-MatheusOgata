@@ -1,6 +1,7 @@
 GCC=gcc
 SRC=$(wildcard *.c)
 DEP=$(SRC:.c=.o)
+FLAGS=-g -Wall -I.
 
 ifneq ($(CROSS_COMPILE),)
         CC=$(addprefix $(CROSS_COMPILE), $(GCC))
@@ -12,13 +13,11 @@ endif
 all: $(DEP) writer
 
 %: %.o
-	$(CC) -o $@ $(DEP)
+	$(CC) $(FLAGS) -o $@ $(DEP) -Wl,-Map=mapfile.map
 
 
 %.o: %.c %.h
-	$(CC) -c $< -o $@
-
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm *.o
-	rm writer
+	rm *.o writer *.map
